@@ -1,0 +1,24 @@
+{% extends 'news/default.html' %}
+
+
+{% block content %}
+    <div class="alert alert-warning mt=2">
+      <h1>{{ news_detail.title }}</h1>
+      <p>{{ news_detail.pub_date|date:"d.m.Y" }}</p>
+      <p>{{ news_detail.text }}</p>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                    <div class="text-center mt-1">
+                        <a class="navbar-brand" href="update/">Редактировать Новость</a>
+                        <a class="navbar-brand" href="delete/">Удалить Новость</a>
+                    </div>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+{% endblock %}

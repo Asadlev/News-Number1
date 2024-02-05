@@ -27,25 +27,25 @@ class NewsList(ListView):
 
 class NewsDetail(DetailView):
     # Модель та же, но мы хотим получать информацию по отдельности
-    # model = News
+    model = News
     # Используем другой шаблон product.html
     template_name = 'news_detail.html'
     # Название обьекта, в которм будет выбранный пользователем продукт
     context_object_name = 'news_detail'
 
-    queryset = News.objects.all()
-
-    def get_object(self, *args, **kwargs):
-
-        obj = cache.get(f'news_detail-{self.kwargs["pk"]}', None)  # кэш очень похож на словарь, и метод get действует так же. Он забирает значение по ключу, если его нет, то забирает None.
-
-        # если объекта нет в кэше, то получаем его и записываем в кэш
-
-        if not obj:
-            obj = super().get_object(queryset=self.queryset)
-            cache.set(f'news_detail-{self.kwargs["pk"]}', obj)
-
-        return obj
+    # queryset = News.objects.all()
+    #
+    # def get_object(self, *args, **kwargs):
+    #
+    #     obj = cache.get(f'news_detail{self.kwargs["pk"]}', None)  # кэш очень похож на словарь, и метод get действует так же. Он забирает значение по ключу, если его нет, то забирает None.
+    #
+    #     # если объекта нет в кэше, то получаем его и записываем в кэш
+    #
+    #     if not obj:
+    #         obj = super().get_object(queryset=self.queryset)
+    #         cache.set(f'news_detail-{self.kwargs["pk"]}', obj)
+    #
+    #     return obj
 
 
 # Добавляем новое представление для создания товаров
@@ -56,6 +56,7 @@ class NewsCreate(CreateView):
     model = News
     # и новый шаблон, в котором используется форма.
     template_name = 'news_edit.html'
+
 
 
 # Добавляем представление для изменения товара

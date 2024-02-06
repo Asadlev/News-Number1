@@ -9,7 +9,7 @@ from django.core.mail import send_mail
 # from django.utils.decorators import method_decorator
 from django.shortcuts import render, HttpResponseRedirect, redirect
 from datetime import datetime
-
+from django.core.cache import cache
 
 class NewsList(ListView):
     # Указываем модель, объекты которой мы будем выводить
@@ -33,6 +33,20 @@ class NewsDetail(DetailView):
     # Название обьекта, в которм будет выбранный пользователем продукт
     context_object_name = 'news_detail'
 
+    # queryset = News.objects.all()
+    #
+    # def get_object(self, *args, **kwargs):
+    #
+    #     obj = cache.get(f'news_detail{self.kwargs["pk"]}', None)  # кэш очень похож на словарь, и метод get действует так же. Он забирает значение по ключу, если его нет, то забирает None.
+    #
+    #     # если объекта нет в кэше, то получаем его и записываем в кэш
+    #
+    #     if not obj:
+    #         obj = super().get_object(queryset=self.queryset)
+    #         cache.set(f'news_detail-{self.kwargs["pk"]}', obj)
+    #
+    #     return obj
+
 
 # Добавляем новое представление для создания товаров
 class NewsCreate(CreateView):
@@ -42,6 +56,7 @@ class NewsCreate(CreateView):
     model = News
     # и новый шаблон, в котором используется форма.
     template_name = 'news_edit.html'
+
 
 
 # Добавляем представление для изменения товара

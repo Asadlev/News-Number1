@@ -3,6 +3,8 @@
 
 
 {% block content %}
+    {% load cache %}
+    {% cache 100 number %}
     <div class="alert alert-warning mt-2">
       <h1>Список новостей</h1>
       <ul>
@@ -14,6 +16,7 @@
         {% endfor %}
       </ul>
     </div>
+    {% endcache %}
 
 {# Добавляем пагинацию на страницу #}
 

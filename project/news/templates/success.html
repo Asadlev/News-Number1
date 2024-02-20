@@ -1,0 +1,6 @@
+{% extends 'news/default.html' %}
+
+{% block content %}
+    <h1>Письмо Отправлено, Успешно!</h1>
+    <a href="{% url 'mails:news_list' %}"><button class="btn btn-sm btn-primary w-100 ml-2">На страницу Главная</button></a>
+{% endblock %}

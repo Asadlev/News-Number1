@@ -1,17 +1,27 @@
 # Импортируем класс, который говорит нам о том,
 # что в этом представлении мы будем выводить список объектов из БД
+from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView, View
-from .models import News, Appointment
+
+from .filters import NewsFilter
 from .forms import NewsForm
+from .models import News, Appointment
+
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.mail import send_mail
+from django.core.mail import mail_managers  # импортируем класс для создание объекта письма с html
+from django.template.loader import render_to_string  # импортируем функцию, которая срендерит наш html в текст
 # from django.utils.decorators import method_decorator
 from django.shortcuts import render, HttpResponseRedirect, redirect
 from datetime import datetime
 from django.core.cache import cache
 
-class NewsList(ListView):
+from django.utils.decorators import method_decorator
+from django.views.generic import TemplateView
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
+class NewsList(LoginRequiredMixin, ListView):
     # Указываем модель, объекты которой мы будем выводить
     model = News
     # Поле, которое будет использоваться для сортировки объектов
@@ -23,6 +33,27 @@ class NewsList(ListView):
     # Его надо указать, чтобы обратиться к списку объектов в html-шаблоне.
     context_object_name = 'news_list'
     paginate_by = 2  # Вот так мы можем указать(ограничить) кол-во записей на странице
+
+    # Переопределяем функцию получения списка товаров
+    def get_queryset(self):
+        # Получаем Обычный запрос
+        queryset = super().get_queryset()
+        '''
+            # Используем наш класс фильтрации.
+       # self.request.GET содержит объект QueryDict, который мы рассматривали
+       # в этом юните ранее.
+       # Сохраняем нашу фильтрацию в объекте класса,
+       # чтобы потом добавить в контекст и использовать в шаблоне.
+        '''
+        self.filterset = NewsFilter(self.request.GET, queryset)
+        # Возвращаем из функций отфильтрованный список товаров
+        return self.filterset.qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Добавляем в контекст обьект фильтраций
+        context['filterset'] = self.filterset
+        return context
 
 
 class NewsDetail(DetailView):
@@ -48,6 +79,7 @@ class NewsDetail(DetailView):
     #     return obj
 
 
+
 # Добавляем новое представление для создания товаров
 class NewsCreate(CreateView):
     # Указываем нашу разработанную форму
@@ -60,19 +92,19 @@ class NewsCreate(CreateView):
 
 
 # Добавляем представление для изменения товара
-class NewsUpdate(UpdateView):
+class NewsUpdate(LoginRequiredMixin, UpdateView):
     form_class = NewsForm
     model = News
     template_name = 'news_edit.html'
-    context_object_name = 'update'
-
+    success_url = reverse_lazy('mails:news_list')
+    # context_object_name = 'update'
 
 # Представление удаляющее товар.
 class NewsDelete(DeleteView):
     model = News
     template_name = 'news_delete.html'
-    success_url = reverse_lazy('news_list')
-    context_object_name = 'delete'
+    success_url = reverse_lazy('mails:news_list')
+    # context_object_name = 'delete'
 
 
 # Пример использование метод_декоратор, для предостовление сайта пользователю, при условий аунентификациий
@@ -83,29 +115,29 @@ class NewsDelete(DeleteView):
 
 # Пример использований миксина LoginRequiredMixin ещё проще.
 # Всего лишь необходимо добавить его в списке наследуемых классов при создании представления.
-class NewsView(LoginRequiredMixin, TemplateView):
-    template_name = 'news_page.html'
+class SuccessView(TemplateView):
+    template_name = 'success.html'
 
 
-# Отправка писем по электронной почте
-class AppointmentView(View):
-    def get(self, request, *args, **kwargs):
-        return render(request, 'mails.html')
 
-    def post(self, request, *args, **kwargs):
-        appointment = Appointment(
-            date=datetime.strptime(request.POST['date'], '%Y-%m-%d'),
-            client_name=request.POST['client_name'],
-            message=request.POST['message'],
-        )
-        appointment.save()
 
-        send_mail(
-            subject=f'{appointment.client_name}: {appointment.date.strftime("%Y-%m-%d")}',
-            message=appointment.message,
-            from_email='imaralievasadbek@yandex.ru',
-            recipient_list=['imaraliev.kg2005@gmail.com']
-        )
+# Авторизация и Регистрация
+# Использование декоратора login_required;
+# @method_decorator(login_required, name='dispatch')
+# class NewsedView(TemplateView):
+#     template_name = 'newsed_page.html'
 
-        return redirect('mails:mails')
+'''
+    Использование миксина LoginRequiredMixin ещё проще. 
+    Всего лишь необходимо добавить его в списке наследуемых 
+    классов при создании представления.
+'''
+
+
+# class NewsedView(LoginRequiredMixin, TemplateView):
+#     template_name = 'newsed_page.html'
+
+# @login_required
+# def profile_view(request):
+    # return render(request, 'profile.html')
 

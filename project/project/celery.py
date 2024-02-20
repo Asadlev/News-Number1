@@ -12,20 +12,20 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 app.autodiscover_tasks()
 
 
-CELERY_BEAT_SCHEDULE = {
-    'send-newsletter': {
-        'task': 'news.tasks.send_notification_email',
-        'schedule': crontab(day_of_week=1, hour=8, minute=0),
-    },
-}
-
-
-CELERY_BEAT_SCHEDULE = {
-    'send-newsletter': {
-        'task': 'news.tasks.send_newsletter',
-        'schedule': crontab(day_of_week=1, hour=8, minute=0),
-    },
-}
+# CELERY_BEAT_SCHEDULE = {
+#     'send-newsletter': {
+#         'task': 'news.tasks.send_notification_email',
+#         'schedule': crontab(day_of_week=1, hour=8, minute=0),
+#     },
+# }
+#
+#
+# CELERY_BEAT_SCHEDULE = {
+#     'send-newsletter': {
+#         'task': 'news.tasks.send_newsletter',
+#         'schedule': crontab(day_of_week=1, hour=8, minute=0),
+#     },
+# }
 
 
 

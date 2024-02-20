@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
-from project.news.models import News, Category
+from news.models import News, Category
 
 
 # class Command(BaseCommand):

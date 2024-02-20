@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import News, Category
+from .models import News, Category, Appointment
 
 
 def nullfy_quantity(modeladmin, request, queryset):
@@ -19,4 +19,5 @@ class NewsModel(admin.ModelAdmin):
 
 admin.site.register(News, NewsModel)
 admin.site.register(Category)
+admin.site.register(Appointment)
 

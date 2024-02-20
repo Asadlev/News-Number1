@@ -1,20 +1,20 @@
-<!DOCTYPE html>
-    <html lang="en">
-    <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Make an appointment</title>
-</head>
-<body>
+{% extends 'news/default.html' %}
+
+{% block content %}
     <h1>Make an appointment</h1>
         <form action="{% url 'mails:mails' %}" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
         <label for="client_name">Your name</label>
+            <br>
             <input type="text" name="client_name"><br>
         <label for="message"> message </label>
+            <br>
             <input type="text" name="message"><br>
+            <br>
         <label for="date">Choose time</label>
+            <br>
             <input type="date" name="date"><br>
+            <br>
         <input type="submit">
         </form>
-</body>
-</html>
+{% endblock %}

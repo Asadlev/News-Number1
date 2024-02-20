@@ -10,12 +10,17 @@ class News(models.Model):
     title = models.CharField(max_length=255)
     text = models.TextField()
     pub_date = models.DateTimeField(auto_now_add=True)
+    category = models.ForeignKey(
+        to='Category',
+        on_delete=models.CASCADE,
+        related_name='news',
+    )
 
     def __str__(self):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('news_detail', args=[str(self.pk)])
+        return reverse('mails:news_detail', args=[str(self.id)])
 
     # def get_absolute_url(self):  # добавим абсолютный путь, чтобы после создания нас перебрасывало на страницу с товаром
     #     return f'/news_list/{self.id}'

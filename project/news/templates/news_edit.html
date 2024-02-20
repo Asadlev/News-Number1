@@ -1,6 +1,9 @@
 {% extends 'news/default.html' %}
 
 {% block content %}
+<h1> Новость </h1>
+<hr>
+<br>
     <form action="" method="post">
         {% csrf_token %}
         {{ form.as_p }}

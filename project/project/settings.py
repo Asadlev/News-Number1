@@ -188,8 +188,8 @@ ACCOUNT_FORMS = {'signup': 'sign.models.BasicSignupForm'}
 
 
 # celery
-CELERY_BROKER_URL = 'redis://:pvPTOP2rPi5IvCPOHC2PNlNEACV8zgPT@redis-14714.c280.us-central1-2.gce.cloud.redislabs.com:14714'
-CELERY_RESULT_BACKEND = 'redis://:pvPTOP2rPi5IvCPOHC2PNlNEACV8zgPT@redis-14714.c280.us-central1-2.gce.cloud.redislabs.com:14714'
+CELERY_BROKER_URL = 'redis://:vqvFPAmVeX3zClKHhxB4dKIXQoLX3Brm@redis-16650.c259.us-central1-2.gce.cloud.redislabs.com:16650'
+CELERY_RESULT_BACKEND = 'redis://:vqvFPAmVeX3zClKHhxB4dKIXQoLX3Brm@redis-16650.c259.us-central1-2.gce.cloud.redislabs.com:16650'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'

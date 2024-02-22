@@ -21,6 +21,11 @@ from django.views.generic import TemplateView
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+from django.http import HttpResponse
+from django.views import View
+from .tasks import hello, printer
+
+
 class NewsList(LoginRequiredMixin, ListView):
     # Указываем модель, объекты которой мы будем выводить
     model = News
@@ -140,4 +145,12 @@ class SuccessView(TemplateView):
 # @login_required
 # def profile_view(request):
     # return render(request, 'profile.html')
+
+
+# Представление для задач celery
+class IndexView(View):
+    def get(self, request):
+        printer.apply_async([10], countdown=5)
+        hello.delay()
+        return HttpResponse('Hello! celery')
 

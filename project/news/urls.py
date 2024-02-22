@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import (
-    NewsList, NewsDetail, NewsCreate, NewsUpdate, NewsDelete, SuccessView,
+    NewsList, NewsDetail, NewsCreate, NewsUpdate, NewsDelete, SuccessView, IndexView,
 )
 from .mails import AppointmentView
 from django.views.decorators.cache import cache_page
@@ -17,4 +17,5 @@ urlpatterns = [
     path('<int:pk>/news_delete', NewsDelete.as_view(), name='news_delete'),
     path('mails', AppointmentView.as_view(), name='mails'),
     path('success', SuccessView.as_view(), name='success'),
+    path('celery/', IndexView.as_view(), name='celery'),
 ]

@@ -7,6 +7,7 @@
 {% load custom_tags %}
 
 {% block content %}
+<h1><a href="{% url 'mails:celery' %}">Celery</a></h1>
     {% load cache %}
     {% cache 100 number %}
     <div class="alert alert-warning mt-2">

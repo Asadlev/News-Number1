@@ -2,6 +2,20 @@ from celery import shared_task
 from django.core.mail import mail_managers
 from django.contrib.auth.models import User
 from .models import News, Appointment
+import time
+
+
+@shared_task
+def hello():
+    time.sleep(1)
+    print('Hello, World')
+
+
+@shared_task
+def printer(N):
+    for i in range(N):
+        time.sleep(1)
+        print(i+1)
 
 
 # @shared_task
@@ -35,5 +49,5 @@ from .models import News, Appointment
 
 
 # task - scheduler
-def send_mails(**kwargs):
-    print('hello from task! send_mails')
+# def send_mails(**kwargs):
+#     print('hello from task! send_mails')

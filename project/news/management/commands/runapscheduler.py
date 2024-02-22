@@ -14,6 +14,7 @@ logger = logging.getLogger(__name__)
 
 # наша задача по выводу текста на экран
 def my_job():
+
     send_mail(
         'Job Mail',
         'hello from job',
@@ -21,7 +22,7 @@ def my_job():
         recipient_list=['imaraliev.kg2005@gmail.com'],
 
     )
-
+    print("my_job")
 
 # функция, которая будет удалять неактуальные задачи
 def delete_old_job_executions(max_age=604_800):
